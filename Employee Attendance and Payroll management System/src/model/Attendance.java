@@ -1,19 +1,16 @@
 package model;
 
 public class Attendance {
-	private String month;
+	private String date;
 	private String employeeId;
-	private String lastCheckIn;
-	private int numberOfDaysPresent;
 
-	Attendance(String month,String employeeId,int numberOfDaysPresent){
-		this.month=month;
-		this.employeeId=employeeId;
-		this.numberOfDaysPresent=numberOfDaysPresent;
+	Attendance(String date, String employeeId) {
+		this.date = date;
+		this.employeeId = employeeId;
 	}
-	
+
 	public Attendance() {
-		
+
 	}
 
 	public String getEmployeeId() {
@@ -24,27 +21,12 @@ public class Attendance {
 		this.employeeId = employeeId;
 	}
 
-	public int getNumberOfDaysPresent() {
-		return numberOfDaysPresent;
+	public String getDate() {
+		return date;
 	}
 
-	public void setNumberOfDaysPresent(int numberOfDaysPresent) {
-		this.numberOfDaysPresent = numberOfDaysPresent;
+	public void setDate(String date) {
+		this.date = date;
 	}
 
-	public String getMonth() {
-		return month;
-	}
-
-	public void setMonth(String month) {
-		this.month = month;
-	}
-
-	public String getLastCheckIn() {
-		return lastCheckIn;
-	}
-
-	public void setLastCheckIn(String lastCheckIn) {
-		this.lastCheckIn = lastCheckIn;
-	}
 }

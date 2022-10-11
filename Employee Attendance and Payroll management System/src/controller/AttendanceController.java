@@ -2,57 +2,106 @@ package controller;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import model.Attendance;
+import model.Employee;
 import model.EmployeeDetailsDatabase;
 
 public class AttendanceController {
 	private Attendance attendance = new Attendance();
 	private List<Attendance> attendanceList = EmployeeDetailsDatabase.getInstance().getAttendanceList();
+	private List<Employee> employeeList = EmployeeDetailsDatabase.getInstance().getEmployeeList();
 
 	public String toCheckIn(String employeeId) {
-		Date date = new Date();
-		SimpleDateFormat monthForm = new SimpleDateFormat("YYYY/MM");
-		String month = monthForm.format(date);
-		SimpleDateFormat dateForm = new SimpleDateFormat("dd/MM/YYYY");
-		String lastCheckIn = dateForm.format(date);
+		String checkInDate = new SimpleDateFormat("YYYY/MM/dd").format(Calendar.getInstance().getTime());
 		for (Attendance attendance : attendanceList) {
-			if ((attendance.getEmployeeId().equals(employeeId)) & (attendance.getMonth().equals(month))) {
-				if (attendance.getLastCheckIn().equals(lastCheckIn)) {
+			if (attendance.getEmployeeId().equals(employeeId)) {
+				if (attendance.getDate().equals(checkInDate)) {
 					return "You have already checked in!!";
 				}
-				if (attendance.getNumberOfDaysPresent() > 23) {
-					return "Exceeds Total Number of Workings days!!";
-				}
-				EmployeeDetailsDatabase.getInstance().updateAttendance(lastCheckIn, attendance);
-				return "Checked in Sucessfully!!";
 			}
 		}
-		attendance.setMonth(month);
+		attendance.setDate(checkInDate);
 		attendance.setEmployeeId(employeeId);
-		attendance.setLastCheckIn(lastCheckIn);
-		attendance.setNumberOfDaysPresent(1);
 		EmployeeDetailsDatabase.getInstance().insertAttendance(attendance);
 		return "Checked in Sucessfully!!";
 	}
 
-	public void toViewAttendance() {
-		for (Attendance attendance : attendanceList) {
-			System.out.printf("\n%-10s %-10s %-15s %-15s", attendance.getMonth(), attendance.getEmployeeId(),
-					attendance.getNumberOfDaysPresent());
-		}
-	}
-
-	public List<Attendance> toViewAttendance(String employeeId) {
+	public List<Attendance> toViewAttendance(String month, String year) {
 		List<Attendance> temporaryAttendanceList = new ArrayList<Attendance>();
 		for (Attendance attendance : attendanceList) {
-			if (attendance.getEmployeeId().equals(employeeId)) {
+			Pattern pattern = Pattern.compile(year + "/" + month + "/(0[1-9]|[12][0-9]|3[01])");
+			Matcher matcher = pattern.matcher(attendance.getDate());
+			if (matcher.matches())
+				temporaryAttendanceList.add(attendance);
+		}
+		return temporaryAttendanceList;
+	}
+
+	public Queue<String> getAttendance(String date) {
+		List<Attendance> temporaryAttendanceList = new ArrayList<Attendance>();
+		Queue<String> temporaryEmployeeList = new LinkedList<String>();
+		for (Attendance attendance : attendanceList) {
+			if (attendance.getDate().equals(date)) {
 				temporaryAttendanceList.add(attendance);
 			}
 		}
+		boolean check = true;
+		for (Employee employee : employeeList) {
+			for (Attendance attendance : temporaryAttendanceList) {
+
+				if (attendance.getEmployeeId().equals(employee.getEmployeeId())) {
+					temporaryEmployeeList.add(employee.getEmployeeId());
+					temporaryEmployeeList.add(employee.getEmployeeName());
+					temporaryEmployeeList.add("Present");
+					check = false;
+				}
+			}
+			if (check) {
+				temporaryEmployeeList.add(employee.getEmployeeId());
+				temporaryEmployeeList.add(employee.getEmployeeName());
+				temporaryEmployeeList.add("Absent");
+			}
+		}
+		return temporaryEmployeeList;
+	}
+
+	public List<Attendance> toViewAttendance(String employeeId, String month, String year) {
+		List<Attendance> temporaryAttendanceList = new ArrayList<Attendance>();
+		for (Attendance attendance : attendanceList) {
+			if (attendance.getEmployeeId().equals(employeeId)) {
+				Pattern pattern = Pattern.compile(year + "/" + month + "/(0[1-9]|[12][0-9]|3[01])");
+				Matcher matcher = pattern.matcher(attendance.getDate());
+				if (matcher.matches())
+					temporaryAttendanceList.add(attendance);
+			}
+		}
 		return temporaryAttendanceList;
+	}
+
+	public int getNumberOfDaysPresent(String employeeId, String month, String year) {
+		return toViewAttendance(employeeId, month, year).size();
+	}
+
+	public int getNumberOfDaysAbsent(int numberOfDaysPresent, String month, String year) {
+		return getNumberOfWorkingDays(month, year) - numberOfDaysPresent;
+	}
+
+	public int getNumberOfWorkingDays(String month, String year) {
+		if (month.equals("08") && year.equals("2022"))
+			return 24;
+		if (month.equals("09") && year.equals("2022"))
+			return 24;
+		if (month.equals("10") && year.equals("2022"))
+			return 8;
+		return 0;
 	}
 
 }

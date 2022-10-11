@@ -5,23 +5,24 @@ import java.util.List;
 import model.Database;
 import model.Employee;
 import model.EmployeeDetailsDatabase;
+import model.LoginDetails;
 
 public class EmployeeDetailsController {
 	private List<Employee> employeeList = EmployeeDetailsDatabase.getInstance().getEmployeeList();
-	private Database database = new Database();
 	private Employee employee;
+	private LoginDetails logindetail;
 
 	public EmployeeDetailsController() {
 	}
 
 	public void toAddEmployee(String employeeId, String employeeName, String dateOfBirth, String designation,
-			Long aadharNumber, Long phoneNumber, String emailId, int salary) {
+			Long aadharNumber, Long phoneNumber, String emailId, int salary, String password) {
 		employee = new Employee(employeeId, employeeName, dateOfBirth, designation, aadharNumber, phoneNumber, emailId,
 				salary);
+		String hashedPassword = (((Integer)password.hashCode()).toString()).trim();
+		logindetail = new LoginDetails(employeeId,hashedPassword);
 		EmployeeDetailsDatabase.getInstance().insertEmployee(employee);
-		database.setData("Insert into employee.employeedetails values ('" + employeeId + "' , '" + employeeName
-				+ "' , '" + dateOfBirth + "' , '" + designation + "' , " + aadharNumber + " , " + phoneNumber + " , '"
-				+ emailId + "' , " + salary + ")");
+		EmployeeDetailsDatabase.getInstance().insertLoginDetails(logindetail);
 	}
 
 	public boolean isExistEmployeeId(String employeeId) {
@@ -33,12 +34,13 @@ public class EmployeeDetailsController {
 		return false;
 	}
 
-	public void toViewEmployee() {
-		for (Employee employee : employeeList) {
-			System.out.printf("\n%-15s %-20s %-15s %-20s %-15s %-15s %-20s", employee.getEmployeeId(),
-					employee.getEmployeeName(), employee.getDateOfBirth(), employee.getDesignation(),
-					employee.getAadharNumber(), employee.getPhoneNumber(), employee.getEmailId());
-		}
+	public void toChangePassword(String employeeId, String newPassword) {
+		String hashedPassword = ((Integer)newPassword.hashCode()).toString();
+		EmployeeDetailsDatabase.getInstance().changePassword(employeeId, hashedPassword);
+	}
+	
+	public List<Employee> toViewEmployee() {
+		return EmployeeDetailsDatabase.getInstance().getEmployeeList();
 	}
 
 	public String toRemoveEmployee(String employeeId) {

@@ -50,15 +50,13 @@ public class Database {
 					employeeList.add(employee);
 				}
 				EmployeeDetailsDatabase.getInstance().insertEmployee(employeeList);
-			} else if (tableName.equals("attendance")) {
+			} else if (tableName.equals("attendancelist")) {
 				Attendance attendance;
 				List<Attendance> attendanceList = new ArrayList<Attendance>();
 				while (resultSet.next()) {
 					attendance = new Attendance();
-					attendance.setMonth(resultSet.getString(1));
+					attendance.setDate(resultSet.getString(1));
 					attendance.setEmployeeId(resultSet.getString(2));
-					attendance.setLastCheckIn(resultSet.getString(3));
-					attendance.setNumberOfDaysPresent(resultSet.getInt(4));
 					attendanceList.add(attendance);
 				}
 				EmployeeDetailsDatabase.getInstance().insertAttendance(attendanceList);

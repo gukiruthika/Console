@@ -4,6 +4,15 @@ public class LoginDetails {
 	private String employeeId;
 	private String password;
 
+	public LoginDetails(String employeeId, String password) {
+		this.employeeId = employeeId;
+		this.password = password;
+	}
+
+	public LoginDetails() {
+		
+	}
+
 	public String getEmployeeId() {
 		return employeeId;
 	}

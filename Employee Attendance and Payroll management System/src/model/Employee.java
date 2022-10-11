@@ -8,7 +8,7 @@ public class Employee {
 	private long aadharNumber;
 	private long phoneNumber;
 	private String emailId;
-	private int salary;
+	private int grossSalary;
 
 	public Employee(){
 		
@@ -22,7 +22,7 @@ public class Employee {
 		this.aadharNumber=aadharNumber;
 		this.phoneNumber=phoneNumber;
 		this.emailId=emailId;
-		this.salary=salary;
+		this.grossSalary=salary;
 	}
 
 	public String getEmployeeName() {
@@ -74,11 +74,11 @@ public class Employee {
 	}
 
 	public int getSalary() {
-		return salary;
+		return grossSalary;
 	}
 
 	public void setSalary(int salary) {
-		this.salary = salary;
+		this.grossSalary = salary;
 	}
 
 	public String getEmailId() {

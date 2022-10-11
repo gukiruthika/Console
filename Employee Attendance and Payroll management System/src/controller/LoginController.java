@@ -21,8 +21,9 @@ public class LoginController {
 	}
 
 	public boolean checkEmployeeCredentials(String employeeId, String password) {
+		String hashedPassword = ((Integer)password.hashCode()).toString();
 		for (LoginDetails loginDetails : loginDetailsList) {
-			if (employeeId.equals(loginDetails.getEmployeeId()) && password.equals(loginDetails.getPassword())) {
+			if (employeeId.equals(loginDetails.getEmployeeId()) && hashedPassword.equals(loginDetails.getPassword())) {
 				return true;
 			}
 		}

@@ -1,6 +1,9 @@
 package controller;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -13,40 +16,40 @@ import model.SalaryDetails;
 public class SalaryController {
 	private SalaryDetails salaryDetails;
 	private List<SalaryDetails> salaryDetailsList = EmployeeDetailsDatabase.getInstance().getSalaryDetailsList();
+	private AttendanceController attendanceController = new AttendanceController();
 
-	public void toUpdateAllSalary(int month, int year) {
+	public String toUpdateAllSalary(String month, String year) {
+		if ((month + "/" + year).equals(new SimpleDateFormat("MM/YYYY").format(Calendar.getInstance().getTime())))
+			return "Month haven't ended yet";
+
 		for (SalaryDetails salaryDetails : salaryDetailsList) {
-			if ((salaryDetails.getMonth() == month) & (salaryDetails.getYear() == year)) {
-				System.out.println("Salary already updated!!");
-				return;
+			if ((salaryDetails.getMonth() == Integer.valueOf(month)
+					& (salaryDetails.getYear() == Integer.valueOf(year)))) {
+				return "Salary already updated!!";
 			}
 		}
+
 		for (int i = 0; i < EmployeeDetailsDatabase.getInstance().getEmployeeList().size(); i++) {
 			String employeeId = EmployeeDetailsDatabase.getInstance().getEmployeeList().get(i).getEmployeeId();
-			int numberOfDaysPresent = 0;
-			List<Attendance> attendanceList = EmployeeDetailsDatabase.getInstance().getAttendanceList();
-			for (Attendance attendance : attendanceList) {
-				if ((attendance.getMonth() == month) & (attendance.getYear() == year)
-						& (attendance.getEmployeeId().equals(employeeId))) {
-					numberOfDaysPresent = attendance.getNumberOfDaysPresent();
-				}
-			}
+			AttendanceController attendanceController = new AttendanceController();
+			int numberOfDaysPresent = attendanceController.getNumberOfDaysPresent(employeeId, month, year);
 			if (numberOfDaysPresent == 0) {
 				continue;
 			}
 			salaryDetails = new SalaryDetails();
-			salaryDetails.setMonth(month);
-			salaryDetails.setYear(year);
+			salaryDetails.setMonth(Integer.valueOf(month));
+			salaryDetails.setYear(Integer.valueOf(year));
 			salaryDetails.setEmployeeId(employeeId);
 			salaryDetails
 					.setEmployeeName(EmployeeDetailsDatabase.getInstance().getEmployeeList().get(i).getEmployeeName());
-			salaryDetails.setNumberOfWorkingDays(25);
+			salaryDetails.setNumberOfWorkingDays(attendanceController.getNumberOfWorkingDays(month, year));
 			salaryDetails.setNumberOfDaysPresent(numberOfDaysPresent);
 			int netSalary = calculateNetSalary(numberOfDaysPresent,
 					EmployeeDetailsDatabase.getInstance().getEmployeeList().get(i).getSalary());
 			salaryDetails.setNetSalary(netSalary);
 			EmployeeDetailsDatabase.getInstance().insertSalaryDetails(salaryDetails);
 		}
+		return "Salary updated successfully";
 	}
 
 	public void toViewSalary() {

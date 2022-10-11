@@ -30,10 +30,15 @@ public class EmployeeDetailsDatabase {
 	// Employees related operations
 	public void insertEmployee(List<Employee> employeeList) {
 		this.employeeList.addAll(employeeList);
+		
 	}
 
 	public void insertEmployee(Employee employee) {
 		this.employeeList.add(employee);
+		database.setData("Insert into employee.employeedetails values ('" + employee.getEmployeeId() + "' , '"
+				+ employee.getEmployeeName() + "' , '" + employee.getDateOfBirth() + "' , '" + employee.getDesignation()
+				+ "' , " + employee.getAadharNumber() + " , " + employee.getPhoneNumber() + " , '"
+				+ employee.getEmailId() + "' , " + employee.getSalary() + ")");
 	}
 
 	public void removeEmployee(String employeeId) {
@@ -41,6 +46,7 @@ public class EmployeeDetailsDatabase {
 				"Insert into employee.pastemployeedetails Select * from employee.employeedetails where employeeId = '"
 						+ employeeId + "'");
 		database.setData("Delete from employee.employeedetails where employeeId= '" + employeeId + "'");
+		database.setData("Delete from employee.logindetails where employeeId= '" + employeeId + "'");
 		this.employeeList.remove(getEmployee(employeeId));
 	}
 
@@ -64,18 +70,8 @@ public class EmployeeDetailsDatabase {
 
 	public void insertAttendance(Attendance attendance) {
 		this.attendanceList.add(attendance);
-		database.setData("Insert into employee.attendance values ('" + attendance.getMonth() + "' , '"
-				+ attendance.getEmployeeId() + "' , '" + attendance.getLastCheckIn() + "' , "
-				+ attendance.getNumberOfDaysPresent() + " )");
-	}
-
-	public void updateAttendance(String lastCheckIn, Attendance attendance) {
-		int numberOfDays = (attendance.getNumberOfDaysPresent() + 1);
-		attendance.setNumberOfDaysPresent(numberOfDays);
-		attendance.setLastCheckIn(lastCheckIn);
-		database.setData("Update employee.attendance set LastCheckIn = '" + lastCheckIn + "', NumberOfDaysPresent = "
-				+ numberOfDays + " where Month = '" + attendance.getMonth() + "' and EmployeeId = '"
-				+ attendance.getEmployeeId() + "'");
+		database.setData("Insert into employee.attendancelist values ('" + attendance.getDate() + "' , '"
+				+ attendance.getEmployeeId() + "' )");
 	}
 
 	public Attendance getAttendance(String employeeId) {
@@ -124,7 +120,7 @@ public class EmployeeDetailsDatabase {
 
 	public void insertLoginDetails(LoginDetails loginDetails) {
 		this.loginDetailsList.add(loginDetails);
-		database.setData("Insert into employee.logindetails values ( '" + loginDetails.getEmployeeId() + "',' "
+		database.setData("Insert into employee.logindetails values ( '" + loginDetails.getEmployeeId() + "','"
 				+ loginDetails.getPassword() + "' )");
 	}
 
@@ -139,5 +135,11 @@ public class EmployeeDetailsDatabase {
 
 	public List<LoginDetails> getLoginDetailsList() {
 		return loginDetailsList;
+	}
+	
+	public void changePassword(String employeeId,String newPassword) {
+		LoginDetails loginDetails = getLoginDetails(employeeId);
+		loginDetails.setPassword(newPassword);
+		database.setData("Update employee.logindetails set password = '" + newPassword + "' where EmployeeID = '" + employeeId + "'");
 	}
 }

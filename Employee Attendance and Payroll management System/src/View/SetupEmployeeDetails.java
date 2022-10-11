@@ -19,7 +19,7 @@ public class SetupEmployeeDetails {
 		} else {
 			Database database = new Database();
 			database.passData("Select * from employee.employeedetails", "employeeDetails");
-			database.passData("Select * from employee.attendance", "attendance");
+			database.passData("Select * from employee.attendancelist", "attendancelist");
 			database.passData("Select * from employee.salarydetails", "salarydetails");
 		}
 	}
