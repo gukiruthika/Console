@@ -1,22 +1,17 @@
 package controller;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
-import model.Attendance;
 import model.EmployeeDetailsDatabase;
 import model.SalaryDetails;
 
 public class SalaryController {
 	private SalaryDetails salaryDetails;
 	private List<SalaryDetails> salaryDetailsList = EmployeeDetailsDatabase.getInstance().getSalaryDetailsList();
-	private AttendanceController attendanceController = new AttendanceController();
 
 	public String toUpdateAllSalary(String month, String year) {
 		if ((month + "/" + year).equals(new SimpleDateFormat("MM/YYYY").format(Calendar.getInstance().getTime())))
