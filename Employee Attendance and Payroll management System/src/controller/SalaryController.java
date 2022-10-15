@@ -47,12 +47,8 @@ public class SalaryController {
 		return "Salary updated successfully";
 	}
 
-	public void toViewSalary() {
-		for (SalaryDetails salaryDetails : salaryDetailsList) {
-			System.out.printf("\n%-10s %-10s %-15s %-20s %-15s %-15s", salaryDetails.getMonth(),
-					salaryDetails.getYear(), salaryDetails.getEmployeeId(), salaryDetails.getEmployeeName(),
-					salaryDetails.getNetSalary(), salaryDetails.getNumberOfDaysPresent());
-		}
+	public List<SalaryDetails> toViewSalary() {
+		return EmployeeDetailsDatabase.getInstance().getSalaryDetailsList();
 	}
 
 	int calculateNetSalary(int numberOfDaysPresent, int grossSalary) {

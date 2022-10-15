@@ -1,6 +1,7 @@
 package View;
 
 import java.util.InputMismatchException;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Queue;
 import java.util.Scanner;
@@ -10,6 +11,7 @@ import controller.EmployeeDetailsController;
 import controller.InputValidation;
 import controller.SalaryController;
 import model.Employee;
+import model.SalaryDetails;
 
 public class AdminMenu {
 	private Scanner scan = new Scanner(System.in);
@@ -131,7 +133,13 @@ public class AdminMenu {
 	private void viewSalary() {
 		System.out.printf("%-10s %-10s %-15s %-20s %-15s %-15s ", "Month", "Year", "Employee Id", "Employee Name",
 				"Net Salary", "Number of Days Present");
-		salaryController.toViewSalary();
+		Iterator<SalaryDetails> salaryDetailsIterator = salaryController.toViewSalary().iterator();
+		while(salaryDetailsIterator.hasNext()) {
+			SalaryDetails salaryDetails = salaryDetailsIterator.next();
+			System.out.printf("\n%-10s %-10s %-15s %-20s %-15s %-15s", salaryDetails.getMonth(),
+					salaryDetails.getYear(), salaryDetails.getEmployeeId(), salaryDetails.getEmployeeName(),
+					salaryDetails.getNetSalary(), salaryDetails.getNumberOfDaysPresent());
+		}
 	}
 
 	private void viewAttendance() {
