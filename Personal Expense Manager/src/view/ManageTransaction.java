@@ -6,7 +6,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import controller.InputController;
+import controller.InputValidation;
 import controller.TransactionController;
 import model.TransactionDatabase;
 import model.Transaction;
@@ -14,7 +14,7 @@ import model.Transaction;
 public class ManageTransaction {
 	private TransactionController transactionController;
 	private Transaction transaction;
-	private InputController inputController = new InputController();
+	private InputValidation inputController = new InputValidation();
 	
 
 	public ManageTransaction(){

@@ -7,7 +7,7 @@ import model.TransactionDatabase;
 
 public class TransactionController {
 	private Transaction transaction;
-	private InputController inputController = new InputController();
+	private InputValidation inputController = new InputValidation();
 	private List<Transaction> transactionList = TransactionDatabase.getInstance().getTransactionList();
 
 	public void toAddTransaction() {

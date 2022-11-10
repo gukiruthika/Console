@@ -4,7 +4,7 @@ import java.util.Scanner;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class InputController {
+public class InputValidation {
 	private Scanner scan = new Scanner(System.in);
 	public String getInput(String field, String regex) {
 		String input;
