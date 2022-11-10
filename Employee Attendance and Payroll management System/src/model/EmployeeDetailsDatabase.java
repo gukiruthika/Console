@@ -12,7 +12,7 @@ public class EmployeeDetailsDatabase {
 	private List<LoginDetails> loginDetailsList;
 	private Database database = new Database();
 
-	EmployeeDetailsDatabase() {
+	private EmployeeDetailsDatabase() {
 		employeeList = new ArrayList<Employee>();
 		salaryDetailsList = new ArrayList<SalaryDetails>();
 		attendanceList = new ArrayList<Attendance>();

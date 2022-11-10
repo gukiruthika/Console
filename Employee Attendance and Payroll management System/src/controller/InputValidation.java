@@ -12,7 +12,7 @@ public class InputValidation {
 		String input;
 		System.out.print("\nEnter " + field + " : ");
 		input = scan.nextLine();
-		if(input.equals("exit"))
+		if (input.equals("exit"))
 			throw new InputMismatchException();
 		Pattern pattern = Pattern.compile(regex);
 		Matcher matcher = pattern.matcher(input);

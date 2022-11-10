@@ -99,7 +99,7 @@ public class AttendanceController {
 		if (month.equals("09") && year.equals("2022"))
 			return 24;
 		if (month.equals("10") && year.equals("2022"))
-			return 8;
+			return 24;
 		return 0;
 	}
 

@@ -6,7 +6,7 @@ import java.util.regex.Pattern;
 
 public class Tax {
 	Scanner scan = new Scanner(System.in);
-
+	
 	void begin() {
 		System.out.println("Tax Liability for Assessment Year -> 2023-24");
 		int taxPayer = getTaxPayer();
