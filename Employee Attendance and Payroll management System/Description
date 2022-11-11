@@ -1,0 +1,15 @@
+Employee Attendance and Payroll management System
+
+Features:
+
+Admin side
+  -> Adding and removing employee
+	-> View Employees 
+	-> Payment of Salary 
+	-> Viewing Salary details of all the employees
+	-> View Attendance details of all the employees
+  
+Employee side
+  -> Check in for attendance
+  -> Viewing pay slip
+  -> Viewing Attendance details
